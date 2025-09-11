@@ -37,6 +37,13 @@ Projeto final da disciplina de Lógica para Computação, Curso de Ciência da C
 - Exercitar a especificação e modelagem de sistemas usando lógica de predicado, tratando sua indecidibilidade a partir do uso de modelos lógicos finitos.
 - A plataforma Alloy Analyzer transforma lógica de predicados em lógica proposicional e utiliza SAT Solvers para medir contradição e satisfatibilidade lógica, mas não prova a validade para todos os escopos, apenas para o escopo finito definido pelo usuário.
 
+### Diretrizes para a modelagem
+
+- Usar assinaturas (`sig`), relações binárias, cardinalidades, `extends` ou `in` (se desejar especializar algo), e quantificadores nos fatos.
+- Incluir pelo menos duas asserções(`asserts`) que permitam verificar propriedades desejáveis do sistema.
+- Criar um cenário exemplo(`run`) e usar pelo menos escopo 5.
+
+
 ### Integrantes do grupo
 
 - Andrey Kauã
