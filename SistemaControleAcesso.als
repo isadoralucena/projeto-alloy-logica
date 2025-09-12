@@ -13,4 +13,13 @@ sig Repositorio{
   organizacao: one Organizacao
 }
 
+/* Define o conjunto de usuários do sistema.
+ * Cada usuário deve estar associado a exatamente uma organização. 
+ * Usuários não podem pertencer a múltiplas organizações
+ * garantindo que as regras de acesso permaneçam consistentes e previsíveis
+*/
+sig Usuario{
+  organizacao: one Organizacao
+}
+
 run {}
