@@ -24,7 +24,8 @@ sig Usuario{
 }
 
 /* Usuários só devem ter acesso aos repositórios da sua própria organização.
- * Sob nenhuma circunstância um usuário pode acessar repositórios de outras organizações, mesmo que participe de múltiplos projetos. 
+ * Sob nenhuma circunstância um usuário pode acessar repositórios de outras organizações,
+ * mesmo que participe de múltiplos projetos. 
  * Isso garante segurança e mantém os limites entre organizações
 */
 fact AcessoRepositorios {
