@@ -28,7 +28,7 @@ sig Usuario{
  * mesmo que participe de múltiplos projetos. 
  * Isso garante segurança e mantém os limites entre organizações
 */
-fact AcessoRepositorios {
+fact RestricaoAcessoUsuarioRepositorio {
   all u: Usuario, r: u.repositorios | r.organizacao = u.organizacao
 }
 
