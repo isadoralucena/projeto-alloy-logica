@@ -19,7 +19,7 @@ sig Repositorio{
  * garantindo que as regras de acesso permaneçam consistentes e previsíveis
 */
 sig Usuario{
-  organizacao: one Organizacao
+  organizacao: one Organizacao,
   repositorios: set Repositorio
 }
 
