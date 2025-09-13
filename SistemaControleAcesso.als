@@ -51,3 +51,6 @@ assert todosRepositoriosComUsuarios {
 }
 
 run {}
+
+check todosUsuariosComAcessoARepositorios
+check todosRepositoriosComUsuarios
