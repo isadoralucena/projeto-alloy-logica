@@ -32,5 +32,22 @@ fact RestricaoAcessoUsuarioRepositorio {
   all u: Usuario, r: u.repositorios | r.organizacao = u.organizacao
 }
 
+/* É aceitável que existam usuários sem acesso a repositórios.
+ * Isso é verificado caso a afirmativa gere um modelo contraexemplo.
+ * A afirmativa diz que todo usuário tem acesso a pelo menos um repositório,
+ * o que nem sempre é verdade.
+*/
+assert todosUsuariosComAcessoARepositorios {
+  all u: Usuario | some u.repositorios
+}
+
+/* É aceitável que existam repositórios sem usuários definidos.
+ * Isso é verificado caso a afirmativa gere um modelo contraexemplo.
+ * A afirmativa diz que todo repositório tem pelo menos um usuario definido,
+ * o que nem sempre é verdade.
+*/
+assert todosRepositoriosComUsuarios {
+  all r: Repositorio | some r.(~repositorios)
+}
 
 run {}
