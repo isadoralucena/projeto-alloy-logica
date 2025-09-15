@@ -35,6 +35,7 @@ pred restricaoAcessoUsuarioRepositorio {
 /* Um desenvolvedor participa ativamente de no máximo cinco repositórios,
  * o que ajuda a manter a produtividade e a organização.
 */
+
 pred limiteRepositoriosPorUsuario {
   all u: Usuario | #u.repositorios <= 5
 }
@@ -58,7 +59,7 @@ fun usuariosDaOrganizacao[o: Organizacao]: Usuario {
   o.(~(this/Usuario <: organizacao))
 }
 
-/* Cenário exemplo que define um possível modelo para o projeto.
+/* Cenário exemplo que define um possível modelo(s) para o projeto.
 */
 pred cenarioExemplo {
   one u: Usuario | #u.repositorios = 0
