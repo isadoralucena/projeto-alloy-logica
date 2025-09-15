@@ -32,6 +32,13 @@ fact RestricaoAcessoUsuarioRepositorio {
   all u: Usuario, r: u.repositorios | r.organizacao = u.organizacao
 }
 
+/* Um desenvolvedor participa ativamente de no máximo cinco repositórios,
+ * o que ajuda a manter a produtividade e a organização.
+*/
+fact LimiteRepositoriosPorUsuario {
+  all u: Usuario | #u.repositorios <= 5
+}
+
 /* É aceitável que existam usuários sem acesso a repositórios.
  * Isso é verificado caso a afirmativa gere um modelo contraexemplo.
  * A afirmativa diz que todo usuário tem acesso a pelo menos um repositório,
