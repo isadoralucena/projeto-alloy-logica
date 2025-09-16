@@ -87,7 +87,15 @@ assert todosRepositoriosComUsuarios {
   all r: Repositorio | some r.(~repositorios)
 }
 
+/* Usuários só devem ter acesso aos repositórios da sua própria organização.
+ * Se houver contraexemplo, significa que a regra está sendo violada.
+*/
+assert usuarioNaoAcessaRepositorioDeOutraOrganizacao {
+  all u: Usuario, r: u.repositorios | r.organizacao = u.organizacao
+}
+
 run cenarioExemplo for 6
 
 check todosUsuariosComAcessoARepositorios
 check todosRepositoriosComUsuarios
+check usuarioNaoAcessaRepositorioDeOutraOrganizacao
