@@ -103,9 +103,18 @@ assert nenhumUsuarioUltrapassaCincoRepositorios {
   all u: Usuario | #u.repositorios <= 5
 }
 
+/* A plataforma não permite, sob nenhuma hipótese, 
+ * que um usuário acesse repositórios fora de sua organização, 
+ * mesmo que esteja envolvido em múltiplos projetos.
+ * Se houver contraexemplo, significa que a regra está sendo violada.
+*/
+assert repositoriosDoUsuarioNaMesmaOrganizacao {
+ all u: Usuario | all r: u.repositorios | r.organizacao = u.organizacao
+}
 run cenarioExemplo for 6
 
 check todosUsuariosComAcessoARepositorios
 check todosRepositoriosComUsuarios
 check usuarioNaoAcessaRepositorioDeOutraOrganizacao
 check nenhumUsuarioUltrapassaCincoRepositorios
+check repositoriosDoUsuarioNaMesmaOrganizacao
