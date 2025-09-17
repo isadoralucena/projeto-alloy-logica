@@ -87,7 +87,34 @@ assert todosRepositoriosComUsuarios {
   all r: Repositorio | some r.(~repositorios)
 }
 
+/* Usuários só devem ter acesso aos repositórios da sua própria organização.
+ * Se houver contraexemplo, significa que a regra está sendo violada.
+*/
+assert usuarioNaoAcessaRepositorioDeOutraOrganizacao {
+  all u: Usuario, r: u.repositorios | r.organizacao = u.organizacao
+}
+
+/* Não se espera que um usuário tenha um volume muito alto de acessos: geralmente,
+ * um desenvolvedor participa ativamente de no máximo cinco repositórios, 
+ * o que ajuda a manter a produtividade e a organização.
+ * Se houver contraexemplo, significa que a regra está sendo violada.
+*/
+assert nenhumUsuarioUltrapassaCincoRepositorios {
+  all u: Usuario | #u.repositorios <= 5
+}
+
+/* A plataforma não permite, sob nenhuma hipótese, 
+ * que um usuário acesse repositórios fora de sua organização, 
+ * mesmo que esteja envolvido em múltiplos projetos.
+ * Se houver contraexemplo, significa que a regra está sendo violada.
+*/
+assert repositoriosDoUsuarioNaMesmaOrganizacao {
+ all u: Usuario | all r: u.repositorios | r.organizacao = u.organizacao
+}
 run cenarioExemplo for 6
 
 check todosUsuariosComAcessoARepositorios
 check todosRepositoriosComUsuarios
+check usuarioNaoAcessaRepositorioDeOutraOrganizacao
+check nenhumUsuarioUltrapassaCincoRepositorios
+check repositoriosDoUsuarioNaMesmaOrganizacao
