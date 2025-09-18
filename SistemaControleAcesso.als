@@ -111,6 +111,23 @@ assert nenhumUsuarioUltrapassaCincoRepositorios {
 assert repositoriosDoUsuarioNaMesmaOrganizacao {
  all u: Usuario | all r: u.repositorios | r.organizacao = u.organizacao
 }
+
+/* Todo usuário pertence a exatamente uma organização */
+assert usuarioPertenceAUmaOrganizacao {
+  all u: Usuario | one u.organizacao
+}
+
+/* Todo repositório pertence a exatamente uma organização */
+assert repositorioPertenceAUmaOrganizacao {
+  all r: Repositorio | one r.organizacao
+}
+
+
+/* Nenhum repositório é compartilhado entre organizações distintas */
+assert repositorioNaoCompartilhadoEntreOrganizacoes {
+  all r: Repositorio | one r.organizacao
+}
+
 run cenarioExemplo for 6
 
 check todosUsuariosComAcessoARepositorios
@@ -118,3 +135,6 @@ check todosRepositoriosComUsuarios
 check usuarioNaoAcessaRepositorioDeOutraOrganizacao
 check nenhumUsuarioUltrapassaCincoRepositorios
 check repositoriosDoUsuarioNaMesmaOrganizacao
+check usuarioPertenceAUmaOrganizacao
+check repositorioPertenceAUmaOrganizacao
+check repositorioNaoCompartilhadoEntreOrganizacoes
