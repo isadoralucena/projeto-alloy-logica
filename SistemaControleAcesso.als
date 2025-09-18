@@ -132,7 +132,7 @@ assert repositorioNaoCompartilhadoEntreOrganizacoes {
  * Se este assert gerar um contraexemplo, confirma que o modelo
  * permite organizações sem usuários.
 */
-assert organizacaoNaoPodeTerZeroUsuarios {
+assert organizacaoDeveTerUsuarios {
   all o: Organizacao |
     some usuariosDaOrganizacao[o]
 }
@@ -141,7 +141,7 @@ assert organizacaoNaoPodeTerZeroUsuarios {
  * Se este assert gerar um contraexemplo, confirma que o modelo
  * permite organizações sem repositórios.
 */
-assert organizacaoNaoPodeTerZeroRepositorios {
+assert organizacaoDeveTerRepositorios {
   all o: Organizacao |
     some repositoriosDaOrganizacao[o]
 }
@@ -174,7 +174,7 @@ check repositoriosDoUsuarioNaMesmaOrganizacao
 check usuarioPertenceAUmaOrganizacao
 check repositorioPertenceAUmaOrganizacao
 check repositorioNaoCompartilhadoEntreOrganizacoes
-check organizacaoNaoPodeTerZeroUsuarios
-check organizacaoNaoPodeTerZeroRepositorios
+check organizacaoDeveTerUsuarios
+check organizacaoDeveTerRepositorios
 check organizacaoNaoPodeTerUsuarios
 check organizacaoNaoPodeTerRepositorios
