@@ -128,13 +128,40 @@ assert repositorioNaoCompartilhadoEntreOrganizacoes {
   all r: Repositorio | one r.organizacao
 }
 
-/* Organizações podem ter zero ou mais usuários e repositórios.
+/* Organizações podem ter zero usuários
  * Se este assert gerar um contraexemplo, confirma que o modelo
- * permite organizações sem usuários e/ou sem repositórios.
+ * permite organizações sem usuários.
 */
-assert organizacaoPodeTerZeroOuMaisUsuariosERepositorios {
+assert organizacaoNaoPodeTerZeroUsuarios {
   all o: Organizacao |
-    some usuariosDaOrganizacao[o] and some repositoriosDaOrganizacao[o]
+    some usuariosDaOrganizacao[o]
+}
+
+/* Organizações podem ter zero repositórios.
+ * Se este assert gerar um contraexemplo, confirma que o modelo
+ * permite organizações sem repositórios.
+*/
+assert organizacaoNaoPodeTerZeroRepositorios {
+  all o: Organizacao |
+    some repositoriosDaOrganizacao[o]
+}
+
+/* Organizações podem ter usuários
+ * Se este assert gerar um contraexemplo, confirma que o modelo
+ * permite organizações com usuários.
+*/
+assert organizacaoNaoPodeTerUsuarios {
+  all o: Organizacao |
+    no usuariosDaOrganizacao[o]
+}
+
+/* Organizações podem ter repositórios.
+ * Se este assert gerar um contraexemplo, confirma que o modelo
+ * permite organizações com repositórios.
+*/
+assert organizacaoNaoPodeTerRepositorios {
+  all o: Organizacao |
+    no repositoriosDaOrganizacao[o]
 }
 
 run cenarioExemplo for 6
@@ -147,4 +174,7 @@ check repositoriosDoUsuarioNaMesmaOrganizacao
 check usuarioPertenceAUmaOrganizacao
 check repositorioPertenceAUmaOrganizacao
 check repositorioNaoCompartilhadoEntreOrganizacoes
-check organizacaoPodeTerZeroOuMaisUsuariosERepositorios
+check organizacaoNaoPodeTerZeroUsuarios
+check organizacaoNaoPodeTerZeroRepositorios
+check organizacaoNaoPodeTerUsuarios
+check organizacaoNaoPodeTerRepositorios
