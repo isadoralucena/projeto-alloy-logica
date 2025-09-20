@@ -103,15 +103,6 @@ assert nenhumUsuarioUltrapassaCincoRepositorios {
   all u: Usuario | #u.repositorios <= 5
 }
 
-/* A plataforma não permite, sob nenhuma hipótese, 
- * que um usuário acesse repositórios fora de sua organização, 
- * mesmo que esteja envolvido em múltiplos projetos.
- * Se houver contraexemplo, significa que a regra está sendo violada.
-*/
-assert repositoriosDoUsuarioNaMesmaOrganizacao {
- all u: Usuario | all r: u.repositorios | r.organizacao = u.organizacao
-}
-
 /* Todo usuário pertence a exatamente uma organização */
 assert usuarioPertenceAUmaOrganizacao {
   all u: Usuario | one u.organizacao
@@ -119,12 +110,6 @@ assert usuarioPertenceAUmaOrganizacao {
 
 /* Todo repositório pertence a exatamente uma organização */
 assert repositorioPertenceAUmaOrganizacao {
-  all r: Repositorio | one r.organizacao
-}
-
-
-/* Nenhum repositório é compartilhado entre organizações distintas */
-assert repositorioNaoCompartilhadoEntreOrganizacoes {
   all r: Repositorio | one r.organizacao
 }
 
@@ -170,10 +155,8 @@ check todosUsuariosComAcessoARepositorios
 check todosRepositoriosComUsuarios
 check usuarioNaoAcessaRepositorioDeOutraOrganizacao
 check nenhumUsuarioUltrapassaCincoRepositorios
-check repositoriosDoUsuarioNaMesmaOrganizacao
 check usuarioPertenceAUmaOrganizacao
 check repositorioPertenceAUmaOrganizacao
-check repositorioNaoCompartilhadoEntreOrganizacoes
 check organizacaoDeveTerUsuarios
 check organizacaoDeveTerRepositorios
 check organizacaoNaoPodeTerUsuarios
