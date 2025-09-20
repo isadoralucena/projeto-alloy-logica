@@ -23,6 +23,10 @@ sig Usuario{
   repositorios: set Repositorio
 }
 
+
+// ---- Funções ----
+
+
 /* Uma função que retorna os repositórios de uma determinada organização.
 */
 fun repositoriosDaOrganizacao[o: Organizacao]: Repositorio {
@@ -34,6 +38,10 @@ fun repositoriosDaOrganizacao[o: Organizacao]: Repositorio {
 fun usuariosDaOrganizacao[o: Organizacao]: Usuario {
   o.(~(this/Usuario <: organizacao))
 }
+
+
+// ---- Predicados ----
+
 
 /* Usuários só devem ter acesso aos repositórios da sua própria organização.
  * Sob nenhuma circunstância um usuário pode acessar repositórios de outras organizações,
@@ -47,7 +55,6 @@ pred restricaoAcessoUsuarioRepositorio {
 /* Um desenvolvedor participa ativamente de no máximo cinco repositórios,
  * o que ajuda a manter a produtividade e a organização.
 */
-
 pred limiteRepositoriosPorUsuario {
   all u: Usuario | #u.repositorios <= 5
 }
@@ -62,12 +69,20 @@ pred cenarioExemplo {
   one o: Organizacao | #repositoriosDaOrganizacao[o] = 0
 }
 
+
+// ---- Fatos ----
+
+
 /* Os predicados que constituem as especificação do projeto.
 */
 fact especificacao {
   restricaoAcessoUsuarioRepositorio
   limiteRepositoriosPorUsuario
 }
+
+
+// ---- Asserts - Verificações Diretas ----
+
 
 /* Usuários só devem ter acesso aos repositórios da sua própria organização.
  * Se houver contraexemplo, significa que a regra está sendo violada.
@@ -77,8 +92,7 @@ assert usuarioNaoAcessaRepositorioDeOutraOrganizacao {
 }
 
 /* Não se espera que um usuário tenha um volume muito alto de acessos: geralmente,
- * um desenvolvedor participa ativamente de no máximo cinco repositórios, 
- * o que ajuda a manter a produtividade e a organização.
+ * um desenvolvedor participa ativamente de no máximo cinco repositórios.
  * Se houver contraexemplo, significa que a regra está sendo violada.
 */
 assert nenhumUsuarioUltrapassaCincoRepositorios {
@@ -94,6 +108,10 @@ assert usuarioPertenceAUmaOrganizacao {
 assert repositorioPertenceAUmaOrganizacao {
   all r: Repositorio | one r.organizacao
 }
+
+
+// ---- Asserts - Verificações Indiretas ----
+
 
 /* Organizações podem ter zero usuários
  * Se este assert gerar um contraexemplo, confirma que o modelo
@@ -132,22 +150,22 @@ assert organizacaoNaoPodeTerRepositorios {
 }
 
 /* É aceitável que existam usuários sem acesso a repositórios.
- * Isso é verificado caso o assert gere um modelo contraexemplo.
- * A afirmativa diz que todo usuário tem acesso a pelo menos um repositório,
- * o que nem sempre é verdade.
+ * Isso é verificado caso este assert gere um modelo contraexemplo.
 */
 assert todosUsuariosComAcessoARepositorios {
   all u: Usuario | some u.repositorios
 }
 
 /* É aceitável que existam repositórios sem usuários definidos.
- * Isso é verificado caso o assert gere um modelo contraexemplo.
- * A afirmativa diz que todo repositório tem pelo menos um usuário definido,
- * o que nem sempre é verdade.
+ * Isso é verificado caso este assert gere um modelo contraexemplo.
 */
 assert todosRepositoriosComUsuarios {
   all r: Repositorio | some r.(~repositorios)
 }
+
+
+// ---- Testes ----
+
 
 run cenarioExemplo for 6
 
