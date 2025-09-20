@@ -23,6 +23,18 @@ sig Usuario{
   repositorios: set Repositorio
 }
 
+/* Uma função que retorna os repositórios de uma determinada organização.
+*/
+fun repositoriosDaOrganizacao[o: Organizacao]: Repositorio {
+  o.(~(this/Repositorio <: organizacao))
+}
+
+/* Uma função que retorna os usuários de uma determinada organização.
+*/
+fun usuariosDaOrganizacao[o: Organizacao]: Usuario {
+  o.(~(this/Usuario <: organizacao))
+}
+
 /* Usuários só devem ter acesso aos repositórios da sua própria organização.
  * Sob nenhuma circunstância um usuário pode acessar repositórios de outras organizações,
  * mesmo que participe de múltiplos projetos. 
@@ -40,25 +52,6 @@ pred limiteRepositoriosPorUsuario {
   all u: Usuario | #u.repositorios <= 5
 }
 
-/* Os predicados que constituem as especificação do projeto.
-*/
-fact especificacao {
-  restricaoAcessoUsuarioRepositorio
-  limiteRepositoriosPorUsuario
-}
-
-/* Uma função que retorna os repositórios de uma determinada organização.
-*/
-fun repositoriosDaOrganizacao[o: Organizacao]: Repositorio {
-  o.(~(this/Repositorio <: organizacao))
-}
-
-/* Uma função que retorna os usuários de uma determinada organização.
-*/
-fun usuariosDaOrganizacao[o: Organizacao]: Usuario {
-  o.(~(this/Usuario <: organizacao))
-}
-
 /* Cenário exemplo que define um possível modelo(s) para o projeto.
 */
 pred cenarioExemplo {
@@ -69,22 +62,11 @@ pred cenarioExemplo {
   one o: Organizacao | #repositoriosDaOrganizacao[o] = 0
 }
 
-/* É aceitável que existam usuários sem acesso a repositórios.
- * Isso é verificado caso o assert gere um modelo contraexemplo.
- * A afirmativa diz que todo usuário tem acesso a pelo menos um repositório,
- * o que nem sempre é verdade.
+/* Os predicados que constituem as especificação do projeto.
 */
-assert todosUsuariosComAcessoARepositorios {
-  all u: Usuario | some u.repositorios
-}
-
-/* É aceitável que existam repositórios sem usuários definidos.
- * Isso é verificado caso o assert gere um modelo contraexemplo.
- * A afirmativa diz que todo repositório tem pelo menos um usuário definido,
- * o que nem sempre é verdade.
-*/
-assert todosRepositoriosComUsuarios {
-  all r: Repositorio | some r.(~repositorios)
+fact especificacao {
+  restricaoAcessoUsuarioRepositorio
+  limiteRepositoriosPorUsuario
 }
 
 /* Usuários só devem ter acesso aos repositórios da sua própria organização.
@@ -149,10 +131,26 @@ assert organizacaoNaoPodeTerRepositorios {
     no repositoriosDaOrganizacao[o]
 }
 
+/* É aceitável que existam usuários sem acesso a repositórios.
+ * Isso é verificado caso o assert gere um modelo contraexemplo.
+ * A afirmativa diz que todo usuário tem acesso a pelo menos um repositório,
+ * o que nem sempre é verdade.
+*/
+assert todosUsuariosComAcessoARepositorios {
+  all u: Usuario | some u.repositorios
+}
+
+/* É aceitável que existam repositórios sem usuários definidos.
+ * Isso é verificado caso o assert gere um modelo contraexemplo.
+ * A afirmativa diz que todo repositório tem pelo menos um usuário definido,
+ * o que nem sempre é verdade.
+*/
+assert todosRepositoriosComUsuarios {
+  all r: Repositorio | some r.(~repositorios)
+}
+
 run cenarioExemplo for 6
 
-check todosUsuariosComAcessoARepositorios
-check todosRepositoriosComUsuarios
 check usuarioNaoAcessaRepositorioDeOutraOrganizacao
 check nenhumUsuarioUltrapassaCincoRepositorios
 check usuarioPertenceAUmaOrganizacao
@@ -161,3 +159,5 @@ check organizacaoDeveTerUsuarios
 check organizacaoDeveTerRepositorios
 check organizacaoNaoPodeTerUsuarios
 check organizacaoNaoPodeTerRepositorios
+check todosUsuariosComAcessoARepositorios
+check todosRepositoriosComUsuarios
